@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Image from "next/image";
 import "./globals.css";
+import Link from "next/link";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -21,9 +23,42 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased bg-background`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="items-center min-h-full flex flex-col bg-background">
+        <header className="flex flex-row items-center justify-between lg:rounded-[10px] lg:px-25 lg:py-2 lg:mt-10 w-6/11 text-[12px] text-(--dark-grey) bg-white drop-shadow-sm">
+            <Link href="/logements" className="text-sm">
+                Accueil
+            </Link>
+            <Link href="/about" className="text-sm">
+                A Propos
+            </Link>
+            <Link href="/logements" className="text-sm">
+                <Image src="/logo.svg" alt="Kasa Logo" width={113} height={40} />
+            </Link>
+            <Link href="/new-logement" className="text-sm text-(--main-red)">
+                + Ajouter un logement
+            </Link>
+            <div className="flex flex-row items-center gap-2.5">
+                <Link href="/liked" className="text-sm">
+                    <Image src="/favoris-red.svg" alt="Kasa Favoris" width={16} height={16} />
+                </Link>
+                <div className="border-l border-(--main-red) h-1.25"></div>
+                <Link href="/messages" className="text-sm">
+                    <Image src="/message-red.svg" alt="Kasa Message" width={16} height={16} />
+                </Link>
+            </div>
+        </header>
+        <main className="flex flex-1 w-full">
+            {children}
+        </main>
+        <footer className="w-full">
+            <div className="flex flex-row justify-between items-center lg:px-10 w-full h-17.5 text-[12px] text-(--dark-grey) bg-white">
+                <Image src="/logo_picto.svg" alt="Kasa Logo" width={50} height={50} />
+                <p>&copy; {new Date().getFullYear()} Kasa. All rights reserved.</p>
+            </div>
+        </footer>
+        </body>
     </html>
   );
 }
