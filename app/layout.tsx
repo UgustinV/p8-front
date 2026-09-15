@@ -49,7 +49,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
                 </Link>
             </div>
         </header>
-        <main className="flex flex-1 w-full">
+        <main className="flex flex-1 w-full items-center justify-center">
             {children}
         </main>
         <footer className="w-full">

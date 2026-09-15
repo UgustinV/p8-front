@@ -3,21 +3,16 @@ import * as z from 'zod'
 export const SignupFormSchema = z.object({
     lastName: z
     .string()
-    .min(2, { error: 'Le nom doit contenir au moins 2 caractères.' })
+    .min(1, { error: 'Le nom est requis.' })
     .trim(),
     firstName: z
     .string()
-    .min(2, { error: 'Le prénom doit contenir au moins 2 caractères.' })
+    .min(1, { error: 'Le prénom est requis.' })
     .trim(),
     email: z.email({ error: 'Veuillez entrer un email valide.' }).trim(),
     password: z
     .string()
-    .min(8, { error: 'Le mot de passe doit contenir au moins 8 caractères.' })
-    .regex(/[a-zA-Z]/, { error: 'Le mot de passe doit contenir au moins une lettre.' })
-    .regex(/[0-9]/, { error: 'Le mot de passe doit contenir au moins un chiffre.' })
-    .regex(/[^a-zA-Z0-9]/, {
-        error: 'Le mot de passe doit contenir au moins un caractère spécial.',
-    })
+    .min(6, { error: 'Le mot de passe doit contenir au moins 6 caractères.' })
     .trim(),
 })
 
@@ -34,12 +29,7 @@ export const ResetPasswordFormSchema = z.object({
     token: z.string().min(1, { error: 'Jeton invalide.' }),
     password: z
     .string()
-    .min(8, { error: 'Le mot de passe doit contenir au moins 8 caractères.' })
-    .regex(/[a-zA-Z]/, { error: 'Le mot de passe doit contenir au moins une lettre.' })
-    .regex(/[0-9]/, { error: 'Le mot de passe doit contenir au moins un chiffre.' })
-    .regex(/[^a-zA-Z0-9]/, {
-        error: 'Le mot de passe doit contenir au moins un caractère spécial.',
-    })
+    .min(6, { error: 'Le mot de passe doit contenir au moins 6 caractères.' })
     .trim(),
 })
 

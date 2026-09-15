@@ -62,7 +62,7 @@ export async function login(state: FormState, formData: FormData): Promise<FormS
     }
 
     await createSession(auth.token, auth.user)
-    redirect('/')
+    redirect('/logements')
 }
 
 export async function logout(): Promise<void> {

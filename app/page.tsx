@@ -1,7 +1,7 @@
-export default function Home() {
-  return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans">
-        Base
-    </div>
-  );
+import { redirect } from "next/navigation";
+import { getSession } from "@/app/lib/session";
+
+export default async function Home() {
+    const session = await getSession();
+    redirect(session ? "/logements" : "/login");
 }
