@@ -1,8 +1,13 @@
 import { listProperties } from "@/app/actions/properties";
+import { listUserFavorites } from "@/app/actions/users";
+import { getSession } from "@/app/lib/session";
 import { HowToCard } from "@/components/howToCard";
 import { PropertyCard } from "@/components/propertyCard";
 import Image from "next/image";
 export default async function LogementsPage() {
+    const session = await getSession();
+    const user = session?.user;
+    const likedProperties = user ? await listUserFavorites(user.id) : [];
     const properties = await listProperties();
     return (
         <div className="mx-40 flex flex-col w-full my-10">
@@ -11,9 +16,9 @@ export default async function LogementsPage() {
                 <p className="text-sm mb-10">Avec Kasa, vivez des séjours uniques dans des hébergements chaleureux, sélectionnés avec soin par nos hôtes.</p>
                 <Image src="/properties_page_illustration.png" alt="Image illustrative des propriétés" width={1117} height={894} className="w-full object-cover h-114.5 rounded-[20px]" />
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 my-10">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 my-10">
                 {properties.map((property) => (
-                    <PropertyCard key={property.id} property={property} />
+                    <PropertyCard key={property.id} property={property} liked={likedProperties.some((likedProperty) => likedProperty.id === property.id)} />
                 ))}
             </div>
             <div className="flex flex-col items-center text-center gap-10 p-10 bg-white rounded-[10px]">
