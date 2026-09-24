@@ -8,10 +8,10 @@ export default function LoginPage() {
     const [state, formAction, isPending] = useActionState(login, undefined)
 
     return (
-        <div className="flex flex-col items-center my-34 w-6/11 py-20 bg-white rounded-[10px] text-center">
-            <h1 className="w-1/2 text-[32px] font-bold mb-2 text-(--main-red)">Heureux de vous revoir</h1>
-            <p className="w-1/2 mb-9.5">Connectez-vous pour retrouver vos réservations, vos annonces et tout ce qui rend vos séjours uniques.</p>
-            <form action={formAction} className="flex flex-col items-center w-1/2">
+        <div className="flex flex-col items-center mx-4 px-4 lg:mx-0 lg:px-0 my-34 w-full lg:w-6/11 py-20 bg-white rounded-[10px] text-center">
+            <h1 className="w-full lg:w-1/2 text-[32px] font-bold mb-2 text-(--main-red)">Heureux de vous revoir</h1>
+            <p className="w-full lg:w-1/2 mb-9.5">Connectez-vous pour retrouver vos réservations, vos annonces et tout ce qui rend vos séjours uniques.</p>
+            <form action={formAction} className="flex flex-col items-center w-full lg:w-1/2">
                 <label
                     htmlFor="email"
                     className='w-full text-[14px] text-left font-medium'

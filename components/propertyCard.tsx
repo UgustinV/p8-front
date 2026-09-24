@@ -40,7 +40,7 @@ export const PropertyCard = ({ property, liked: initialLiked = false, onUnlike }
                 <Image src={liked ? "/favoris-selected.svg" : "/favoris.svg"} alt={property.title} width={16} height={16} className="h-4 w-4" />
             </button>
             <Link className="rounded-b-[10px]" href={`/logements/${property.id}`}>
-                <Image src={property.cover ?? "/default-cover.jpg"} alt={property.title} className="w-full min-h-94 object-cover rounded-t-[10px] pb-4" width={400} height={300} />
+                <Image src={property.cover ?? "/default-cover.jpg"} alt={property.title} className="w-full h-94 object-cover rounded-t-[10px] pb-4" width={600} height={376} />
                 <div className="px-6 pb-6">
                     <h2 className="text-lg font-bold text-(--dark-grey)">{property.title}</h2>
                     <p className="text-sm text-gray-500 mb-15.5">{property.location}</p>

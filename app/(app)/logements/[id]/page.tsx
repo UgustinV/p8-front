@@ -8,22 +8,22 @@ export default async function LogementPage({ params }: { params: Promise<{ id: s
     const { id } = await params
     const property = await getProperty(id)
     return (
-        <div className="flex flex-col w-full gap-6 mx-40 my-21.5">
+        <div className="flex flex-col w-full gap-6 lg:mx-40 mx-4 lg:my-21.5 my-4">
             <Link href="/logements" className="flex flex-row items-center gap-1 bg-(--light-grey) p-2.5 rounded-[10px] w-fit my-4">
                 <Image src="/back.svg" alt="Retour aux annonces" width={24} height={24} />
                 <span className="text-(--dark-grey) font-medium">Retour aux annonces</span>
             </Link>
-            <div className="flex flex-row w-full gap-2.5">
-                <div className="flex flex-col w-2/3 gap-6">
-                    <div className="grid grid-cols-4 grid-rows-2 gap-4 h-150">
+            <div className="flex flex-col lg:flex-row w-full gap-2.5">
+                <div className="flex flex-col w-full lg:w-2/3 gap-6">
+                    <div className="grid grid-cols-4 grid-rows-5 lg:grid-cols-4 lg:grid-rows-2 gap-2 lg:gap-4 h-150">
                         {property.pictures?.map((image, index) => (
-                            <div key={index} className={`relative ${index === 0 ? "col-span-2 row-span-2" : ""}`}>
+                            <div key={index} className={`relative ${index === 0 ? "col-span-4 row-span-4 lg:col-span-2 lg:row-span-2" : ""}`}>
                                 <Image
                                     src={image}
                                     alt={`Image ${index + 1} de la propriété`}
                                     fill
                                     sizes={index === 0 ? "50vw" : "25vw"}
-                                    className="object-cover rounded-[10px]"
+                                    className={`object-cover rounded-[10px] ${index === 0 ? "lg:w-50vw w-100vw" : "w-25vw"}`}
                                 />
                             </div>
                         ))}
@@ -37,7 +37,7 @@ export default async function LogementPage({ params }: { params: Promise<{ id: s
                         <p className="font-medium">{property.description}</p>
                         <div className="flex flex-col my-10 gap-4">
                             <span className="font-bold">Équipements</span>
-                            <div className="grid grid-cols-3 gap-2 max-w-2/5">
+                            <div className="grid grid-cols-3 gap-2 w-full lg:max-w-2/5 items-center">
                                 {property.equipments?.map((equipment, index) => (
                                     <Tag key={index} label={equipment}></Tag>
                                 ))}
@@ -45,7 +45,7 @@ export default async function LogementPage({ params }: { params: Promise<{ id: s
                         </div>
                         <div className="flex flex-col my-10 gap-4">
                             <span className="font-bold">Catégories</span>
-                            <div className="grid grid-cols-3 gap-2 max-w-2/5">
+                            <div className="grid grid-cols-3 gap-2 w-full lg:max-w-2/5 items-center">
                                 {property.tags?.map((tag, index) => (
                                     <Tag key={index} label={tag}></Tag>
                                 ))}
@@ -53,7 +53,7 @@ export default async function LogementPage({ params }: { params: Promise<{ id: s
                         </div>
                     </div>
                 </div>
-                <div className="flex flex-col justify-start items-start bg-white w-1/3 h-fit p-6 rounded-[10px] gap-2 text-[16px]">
+                <div className="flex flex-col justify-start items-start bg-white w-full lg:w-1/3 h-fit p-6 rounded-[10px] gap-2 text-[16px]">
                     <span className="font-bold">Votre hôte</span>
                     <div className="flex flex-row items-center gap-4.5 py-4">
                         <Image src={property.host?.picture ?? "/default-profile.png"} alt={"Photo de profil de l'hôte"} width={82} height={82} className="w-20.5 h-20.5 rounded-[10px]" />
