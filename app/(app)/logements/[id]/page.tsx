@@ -1,4 +1,5 @@
 import { getProperty } from "@/app/actions/properties";
+import { PropertyGallery } from "@/components/propertyGallery";
 import { MainButton } from "@/components/mainButton";
 import { Tag } from "@/components/tag";
 import Image from "next/image";
@@ -15,19 +16,7 @@ export default async function LogementPage({ params }: { params: Promise<{ id: s
             </Link>
             <div className="flex flex-col lg:flex-row w-full gap-2.5">
                 <div className="flex flex-col w-full lg:w-2/3 gap-6">
-                    <div className="grid grid-cols-4 grid-rows-5 lg:grid-cols-4 lg:grid-rows-2 gap-2 lg:gap-4 h-150">
-                        {property.pictures?.map((image, index) => (
-                            <div key={index} className={`relative ${index === 0 ? "col-span-4 row-span-4 lg:col-span-2 lg:row-span-2" : ""}`}>
-                                <Image
-                                    src={image}
-                                    alt={`Image ${index + 1} de la propriété`}
-                                    fill
-                                    sizes={index === 0 ? "50vw" : "25vw"}
-                                    className={`object-cover rounded-[10px] ${index === 0 ? "lg:w-50vw w-100vw" : "w-25vw"}`}
-                                />
-                            </div>
-                        ))}
-                    </div>
+                    <PropertyGallery images={property.pictures ?? []} alt={property.title} />
                     <div className="bg-white rounded-[10px] p-6">
                         <h1 className="font-bold text-2xl mb-2.5">{property.title}</h1>
                         <div className="flex flex-row items-center gap-2 mb-8">
@@ -43,6 +32,7 @@ export default async function LogementPage({ params }: { params: Promise<{ id: s
                                 ))}
                             </div>
                         </div>
+
                         <div className="flex flex-col my-10 gap-4">
                             <span className="font-bold">Catégories</span>
                             <div className="grid grid-cols-3 gap-2 w-full lg:max-w-2/5 items-center">
@@ -64,7 +54,6 @@ export default async function LogementPage({ params }: { params: Promise<{ id: s
                         </div>
                     </div>
                     <MainButton label="Contacter l'hôte" href={`/messages/${property.host?.id}`}></MainButton>
-                    <MainButton label="Envoyer un message" href={`/messages/${property.host?.id}`}></MainButton>
                 </div>
             </div>
         </div>

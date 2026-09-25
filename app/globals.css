@@ -22,3 +22,12 @@ body {
   color: var(--foreground);
   font-family: Inter, sans-serif;
 }
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
