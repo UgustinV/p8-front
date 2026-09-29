@@ -152,12 +152,8 @@ export type UploadPurpose = 'property-cover' | 'property-picture' | 'user-pictur
 
 export type UploadResponse = {
     url: string
-    filename?: string
-    size?: number
-    mimetype?: string
+    public_id: string
     purpose?: UploadPurpose | null
-    property_id?: string | null
-    instructions?: string
 }
 
 export type Ok = {
