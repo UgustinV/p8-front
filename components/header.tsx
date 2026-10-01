@@ -43,15 +43,15 @@ export default function Header() {
                     + Ajouter un logement
                 </Link>
                 <div className="hidden lg:flex flex-row items-center gap-2.5">
-                    <Link href="/liked">
+                    <Link href="/liked" prefetch={false}>
                         <Image src="/favoris-red.svg" alt="Kasa Favoris" width={16} height={16} />
                     </Link>
                     <div className="border-l border-(--main-red) h-1.25"></div>
-                    <Link href="/messages">
+                    <Link href="/messages" prefetch={false}>
                         <Image src="/message-red.svg" alt="Kasa Message" width={16} height={16} />
                     </Link>
                     <div className="border-l border-(--main-red) h-1.25"></div>
-                    <Link href="/logout">
+                    <Link href="/logout" prefetch={false}>
                         <Image src="/logout.svg" alt="Kasa Logout" width={14} height={14} />
                     </Link>
                 </div>
@@ -76,13 +76,13 @@ export default function Header() {
                     <Link href="/about" onClick={() => setIsMenuOpen(false)}>
                         A Propos
                     </Link>
-                    <Link href="/new-logement" className="text-(--main-red)" onClick={() => setIsMenuOpen(false)}>
+                    <Link href="/new-logement" className="text-(--main-red)" prefetch={false} onClick={() => setIsMenuOpen(false)}>
                         + Ajouter un logement
                     </Link>
-                    <Link href="/liked" onClick={() => setIsMenuOpen(false)}>
+                    <Link href="/liked" prefetch={false} onClick={() => setIsMenuOpen(false)}>
                         Favoris
                     </Link>
-                    <Link href="/messages" onClick={() => setIsMenuOpen(false)}>
+                    <Link href="/messages" prefetch={false} onClick={() => setIsMenuOpen(false)}>
                         Messages
                     </Link>
                 </div>
