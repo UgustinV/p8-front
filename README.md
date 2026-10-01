@@ -1,36 +1,75 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Kasa - Application de location immobilière
 
-## Getting Started
+## Description du projet
 
-First, run the development server:
+Kasa est une application web permettant de consulter des annonces de location immobilière, de gérer ses biens en tant qu'hôte, de marquer des logements en favoris et d'échanger des messages. Le projet est développé avec **Next.js** (App Router) et **React**, et s'appuie sur une API backend externe pour la gestion des données (utilisateurs, logements, uploads d'images).
+
+Principales fonctionnalités :
+- Consultation de logements (`app/(app)/logements`)
+- Détail d'un logement avec galerie photo et carrousel (`app/(app)/logements/[id]`)
+- Création d'une annonce (`app/(app)/new-logement`)
+- Gestion des favoris (`app/(app)/liked`)
+- Messagerie (`app/(app)/messages`)
+- Authentification (connexion, inscription, déconnexion) via `app/(auth)`
+
+## Pré-requis pour l'installation
+
+Avant d'installer le projet, assurez-vous d'avoir :
+
+- [Node.js](https://nodejs.org/) (version 20 ou supérieure recommandée)
+- [pnpm](https://pnpm.io/) (gestionnaire de paquets utilisé par le projet - `pnpm@9.9.0`)
+- Un accès à l'API backend (URL fournie via la variable d'environnement `API_URL`)
+- Un compte [Cloudinary](https://cloudinary.com/) pour l'upload des images (identifiants requis)
+
+## Installation
+
+1. Cloner le dépôt :
+   ```bash
+   git clone <url-du-depot>
+   cd p8-front
+   ```
+
+2. Installer les dépendances :
+   ```bash
+   pnpm install
+   ```
+
+3. Créer un fichier `.env.local` à la racine du projet et renseigner les variables d'environnement suivantes :
+   ```env
+   # URL de l'API backend (par défaut : http://localhost:8000)
+   API_URL=http://localhost:8000
+
+   # Clé secrète utilisée pour signer les sessions (obligatoire)
+   SESSION_SECRET=une_chaine_secrete_aleatoire
+
+   # Identifiants Cloudinary pour l'upload des photos de logements
+   CLOUDINARY_CLOUD_NAME=xxxxxxxx
+   CLOUDINARY_API_KEY=xxxxxxxx
+   CLOUDINARY_API_SECRET=xxxxxxxx
+   CLOUDINARY_FOLDER=kasa
+   ```
+
+## Lancement du projet
+
+### Mode développement
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+L'application est alors accessible sur [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Build de production
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+pnpm build
+pnpm start
+```
 
-## Learn More
+### Autres commandes utiles
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+pnpm lint        # Analyse du code avec ESLint
+pnpm test        # Exécution des tests unitaires (Vitest)
+pnpm test:watch  # Tests en mode watch
+```
