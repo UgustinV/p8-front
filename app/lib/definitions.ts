@@ -201,3 +201,8 @@ export type ConversationCreate = {
     property_id?: string | null
     message?: string | null
 }
+
+export function parseUtcDate(iso: string): Date {
+    const hasTimezone = /[zZ]|[+-]\d{2}:?\d{2}$/.test(iso);
+    return new Date(hasTimezone ? iso : `${iso}Z`);
+}

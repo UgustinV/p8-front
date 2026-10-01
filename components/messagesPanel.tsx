@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Conversation } from "@/components/conversation";
 import { listMessages, sendMessage, markConversationRead } from "@/app/actions/messages";
-import type { ConversationSummary, Message } from "@/app/lib/definitions";
+import { parseUtcDate, type ConversationSummary, type Message } from "@/app/lib/definitions";
 
 type MessagesPanelProps = {
     conversations: ConversationSummary[];
@@ -85,7 +85,7 @@ export const MessagesPanel = ({ conversations, currentUserId, initialSelectedId 
                                         <span className="font-semibold text-sm">{otherParticipant?.name ?? "Utilisateur"}</span>
                                         {conv.last_message && (
                                             <span className="text-xs text-(--dark-grey) whitespace-nowrap">
-                                                {new Date(conv.last_message.created_at).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}
+                                                {parseUtcDate(conv.last_message.created_at).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}
                                             </span>
                                         )}
                                     </div>

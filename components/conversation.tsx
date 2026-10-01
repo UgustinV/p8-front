@@ -2,7 +2,7 @@
 
 import { useState, type SubmitEvent } from "react";
 import Image from "next/image";
-import type { Message } from "@/app/lib/definitions";
+import { parseUtcDate, type Message } from "@/app/lib/definitions";
 
 type ConversationProps = {
     contactName: string;
@@ -12,11 +12,11 @@ type ConversationProps = {
 };
 
 function formatTime(iso: string) {
-    return new Date(iso).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
+    return parseUtcDate(iso).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
 }
 
 function formatDate(iso: string) {
-    return new Date(iso).toLocaleDateString("fr-FR", { day: "2-digit", month: "long", year: "numeric" });
+    return parseUtcDate(iso).toLocaleDateString("fr-FR", { day: "2-digit", month: "long", year: "numeric" });
 }
 
 export const Conversation = ({ contactName, currentUserId, messages, onSendMessage }: ConversationProps) => {
