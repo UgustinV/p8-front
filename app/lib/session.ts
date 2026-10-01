@@ -44,13 +44,16 @@ function deserialize(cookieValue: string): Session | null {
     }
 }
 
-/**
- * Crée un cookie de session signé et httpOnly pour l'utilisateur authentifié.
- *
- * @param token - Le token d'authentification de l'utilisateur.
- * @param user - Les informations de l'utilisateur authentifié.
- * @returns Une promesse résolue lorsque le cookie de session est créé.
- */
+// usable outside the next/headers request context, e.g. from Proxy
+export function verifySessionCookie(raw: string | undefined): Session | null {
+    if (!raw) return null
+
+    const session = deserialize(raw)
+    if (!session || new Date(session.expiresAt) < new Date()) return null
+
+    return session
+}
+
 export async function createSession(token: string, user: AuthUser): Promise<void> {
     const expiresAt = new Date(Date.now() + SESSION_DURATION_MS)
     const cookieStore = await cookies()
@@ -71,20 +74,9 @@ export async function createSession(token: string, user: AuthUser): Promise<void
  */
 export async function getSession(): Promise<Session | null> {
     const cookieStore = await cookies()
-    const raw = cookieStore.get(COOKIE_NAME)?.value
-    if (!raw) return null
-
-    const session = deserialize(raw)
-    if (!session || new Date(session.expiresAt) < new Date()) return null
-
-    return session
+    return verifySessionCookie(cookieStore.get(COOKIE_NAME)?.value)
 }
 
-/**
- * Supprime le cookie de session (déconnexion).
- *
- * @returns Une promesse résolue lorsque le cookie de session est supprimé.
- */
 export async function deleteSession(): Promise<void> {
     const cookieStore = await cookies()
     cookieStore.delete(COOKIE_NAME)

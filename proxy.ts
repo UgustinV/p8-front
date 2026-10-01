@@ -1,18 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getSession } from '@/app/lib/session'
+import { verifySessionCookie } from '@/app/lib/session'
 
-const publicRoutes = ['/login', '/register']
+const authRoutes = ['/login', '/register']
+const privateRoutePrefixes = ['/liked', '/messages', '/new-logement']
 
-export default async function proxy(request: NextRequest) {
+export default function proxy(request: NextRequest) {
     const { pathname } = request.nextUrl
-    const isPublicRoute = publicRoutes.includes(pathname)
-    const session = await getSession()
+    const isAuthRoute = authRoutes.includes(pathname)
+    const isPrivateRoute = privateRoutePrefixes.some((prefix) => pathname.startsWith(prefix))
+    const session = verifySessionCookie(request.cookies.get('session')?.value)
 
-    if (!isPublicRoute && !session) {
+    if (isPrivateRoute && !session) {
         return NextResponse.redirect(new URL('/login', request.url))
     }
 
-    if (isPublicRoute && session) {
+    if (isAuthRoute && session) {
         return NextResponse.redirect(new URL('/logements', request.url))
     }
 
