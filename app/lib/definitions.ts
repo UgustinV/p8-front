@@ -113,9 +113,9 @@ export type PropertyCreate = {
     description?: string
     cover?: string
     location?: string
-    price_per_night?: number
-    host_id?: number
-    host?: {
+    price_per_night: number
+    host_id: number
+    host: {
         name: string
         picture?: string
     }
@@ -162,4 +162,42 @@ export type Ok = {
 
 export type ApiError = {
     error: string
+}
+
+export type ConversationParticipant = {
+    id: number
+    name: string
+    picture?: string | null
+    role: Role
+}
+
+export type Message = {
+    id: number
+    conversation_id: number
+    sender_id: number
+    body: string
+    created_at: string
+}
+
+export type MessageCreate = {
+    body: string
+}
+
+export type Conversation = {
+    id: number
+    property_id?: string | null
+    created_at: string
+    updated_at: string
+    participants: ConversationParticipant[]
+}
+
+export type ConversationSummary = Conversation & {
+    last_message: Message | null
+    unread_count: number
+}
+
+export type ConversationCreate = {
+    recipient_id: number
+    property_id?: string | null
+    message?: string | null
 }

@@ -1,6 +1,7 @@
 import { getProperty } from "@/app/actions/properties";
 import { PropertyGallery } from "@/components/propertyGallery";
-import { MainButton } from "@/components/mainButton";
+import { startConversationWithHost } from "@/app/actions/messages";
+import { getSession } from "@/app/lib/session";
 import { Tag } from "@/components/tag";
 import Image from "next/image";
 import Link from "next/link";
@@ -8,6 +9,9 @@ import Link from "next/link";
 export default async function LogementPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params
     const property = await getProperty(id)
+    const session = await getSession()
+    const isOwnProperty = property.host?.id === session?.user.id
+
     return (
         <div className="flex flex-col w-full gap-6 lg:mx-40 mx-4 lg:my-21.5 my-4">
             <Link href="/logements" className="flex flex-row items-center gap-1 bg-(--light-grey) p-2.5 rounded-[10px] w-fit my-4">
@@ -53,7 +57,13 @@ export default async function LogementPage({ params }: { params: Promise<{ id: s
                             <p className="font-medium">{property.rating_avg}</p>
                         </div>
                     </div>
-                    <MainButton label="Contacter l'hôte" href={`/messages/${property.host?.id}`}></MainButton>
+                    {property.host && !isOwnProperty && (
+                        <form action={startConversationWithHost.bind(null, property.host.id, property.id)} className="w-full">
+                            <button type="submit" className="w-full bg-(--main-red) text-white text-center font-semibold py-2.5 rounded-[10px] hover:cursor-pointer">
+                                Contacter l&apos;hôte
+                            </button>
+                        </form>
+                    )}
                 </div>
             </div>
         </div>

@@ -60,7 +60,7 @@ export default function RegisterPage() {
                 {state?.message && <p role="alert" className="text-(--main-red)">{state.message}</p>}
 
                 <button type="submit" disabled={isPending} className="hover:cursor-pointer bg-(--main-red) text-white text-[14px] py-2 px-16 rounded-[10px] mb-5.5">
-                    {isPending ? 'Inscription...' : "S&apos;inscrire"}
+                    {isPending ? 'Inscription...' : "S'inscrire"}
                 </button>
                 <p className="text-(--main-red) text-[14px] mt-2">Déjà membre ? <Link href="/login">Se connecter</Link></p>
             </form>

@@ -2,9 +2,12 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 export default function Header() {
+    const pathname = usePathname();
+    const isMessagesPage = pathname === "/messages";
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const headerRef = useRef<HTMLElement>(null);
 
@@ -22,7 +25,7 @@ export default function Header() {
     }, [isMenuOpen]);
 
     return (
-        <header ref={headerRef} className="relative w-full lg:w-6/11">
+        <header ref={headerRef} className={`relative w-full lg:w-6/11 ${isMessagesPage ? "lg:hidden" : ""}`}>
             <nav className="flex flex-row items-center justify-between px-5 py-3 lg:rounded-[10px] lg:px-25 lg:py-2 lg:mt-10 w-full text-[12px] text-(--dark-grey) bg-white drop-shadow-sm">
                 <Link href="/logements" className="lg:hidden">
                     <Image src="/logo_picto.svg" alt="Kasa Logo" width={40} height={40} />
@@ -40,12 +43,16 @@ export default function Header() {
                     + Ajouter un logement
                 </Link>
                 <div className="hidden lg:flex flex-row items-center gap-2.5">
-                    <Link href="/liked" className="text-sm">
+                    <Link href="/liked">
                         <Image src="/favoris-red.svg" alt="Kasa Favoris" width={16} height={16} />
                     </Link>
                     <div className="border-l border-(--main-red) h-1.25"></div>
-                    <Link href="/messages" className="text-sm">
+                    <Link href="/messages">
                         <Image src="/message-red.svg" alt="Kasa Message" width={16} height={16} />
+                    </Link>
+                    <div className="border-l border-(--main-red) h-1.25"></div>
+                    <Link href="/logout">
+                        <Image src="/logout.svg" alt="Kasa Logout" width={14} height={14} />
                     </Link>
                 </div>
 
