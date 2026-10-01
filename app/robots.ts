@@ -5,7 +5,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: ["/login", "/register", "/liked", "/messages", "/new-logement"],
+      disallow: ["/liked", "/messages", "/new-logement"],
     },
   };
 }
