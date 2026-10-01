@@ -10,7 +10,7 @@ export default function RegisterPage() {
     return (
         <div className="flex flex-col items-center mx-4 px-4 lg:mx-0 lg:px-0 my-34 w-full lg:w-6/11 py-20 bg-white rounded-[10px] text-center">
             <h1 className="w-full lg:w-1/2 text-[32px] font-bold mb-2 text-(--main-red)">Rejoignez la communauté Kasa</h1>
-            <p className="w-full lg:w-1/2 mb-9.5">Créez votre compte et commencez à voyager autrement : réservez des logements uniques, découvrez de nouvelles destinations et partagez vos propres lieux avec d’autres voyageurs.</p>
+            <p className="w-full lg:w-1/2 mb-9.5">Créez votre compte et commencez à voyager autrement : réservez des logements uniques, découvrez de nouvelles destinations et partagez vos propres lieux avec d&apos;autres voyageurs.</p>
             <form action={formAction} className="flex flex-col items-center w-full lg:w-1/2">
                 <label htmlFor="lastName" className='w-full text-[14px] text-left font-medium'>Nom</label>
                 <input
@@ -54,13 +54,13 @@ export default function RegisterPage() {
 
                 <label htmlFor="confirm-user-policy" className="flex flex-row items-center gap-1 w-full text-[12px] text-left mb-9.5">
                     <input type="checkbox" id="confirm-user-policy" name="confirm-user" required className="mr-2 text-(--dark-grey) hover:cursor-pointer" />
-                    J'accepte les <a href="#" className="underline text-(--dark-grey)">conditions générales d'utilisation</a>
+                    J&apos;accepte les <a href="#" className="underline text-(--dark-grey)">conditions générales d&apos;utilisation</a>
                 </label>
 
                 {state?.message && <p role="alert" className="text-(--main-red)">{state.message}</p>}
 
                 <button type="submit" disabled={isPending} className="hover:cursor-pointer bg-(--main-red) text-white text-[14px] py-2 px-16 rounded-[10px] mb-5.5">
-                    {isPending ? 'Inscription...' : "S'inscrire"}
+                    {isPending ? 'Inscription...' : "S&apos;inscrire"}
                 </button>
                 <p className="text-(--main-red) text-[14px] mt-2">Déjà membre ? <Link href="/login">Se connecter</Link></p>
             </form>

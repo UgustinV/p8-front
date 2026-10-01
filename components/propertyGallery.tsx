@@ -9,6 +9,7 @@ type PropertyGalleryProps = {
     alt: string;
 };
 
+/** Grille de miniatures ouvrant un carrousel modal au clic. */
 export const PropertyGallery = ({ images, alt }: PropertyGalleryProps) => {
     const [openIndex, setOpenIndex] = useState<number | null>(null);
     const close = useCallback(() => setOpenIndex(null), []);
@@ -19,7 +20,6 @@ export const PropertyGallery = ({ images, alt }: PropertyGalleryProps) => {
             if (event.key === "Escape") close();
         };
         document.addEventListener("keydown", handleKeyDown);
-        // prevent background scroll while the modal is open
         document.body.style.overflow = "hidden";
         return () => {
             document.removeEventListener("keydown", handleKeyDown);

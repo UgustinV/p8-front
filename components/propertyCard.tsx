@@ -12,6 +12,7 @@ type PropertyCardProps = {
     onUnlike?: (propertyId: string) => void;
 };
 
+/** Carte de logement avec bouton favori à mise à jour dynamiquement. */
 export const PropertyCard = ({ property, liked: initialLiked = false, onUnlike }: PropertyCardProps) => {
     const [liked, setLiked] = useState(initialLiked);
     const [isPending, startTransition] = useTransition();

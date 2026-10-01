@@ -13,6 +13,12 @@ import {
 import { apiFetch, ApiRequestError } from '@/app/lib/api'
 import { createSession, deleteSession } from '@/app/lib/session'
 
+/** Valide les champs d'inscription, crée le compte via l'API puis ouvre une session. 
+ * 
+ * @param state - L'état actuel du formulaire.
+ * @param formData - Les données du formulaire d'inscription.
+ * @returns Le nouvel état du formulaire après la tentative d'inscription.
+*/
 export async function signup(state: FormState, formData: FormData): Promise<FormState> {
     const validatedFields = SignupFormSchema.safeParse({
         lastName: formData.get('lastName'),
@@ -41,6 +47,12 @@ export async function signup(state: FormState, formData: FormData): Promise<Form
     redirect('/')
 }
 
+/** Valide les identifiants, authentifie l'utilisateur via l'API puis ouvre une session.
+ *
+ * @param state - L'état actuel du formulaire.
+ * @param formData - Les données du formulaire de connexion.
+ * @returns Le nouvel état du formulaire après la tentative de connexion.
+ */
 export async function login(state: FormState, formData: FormData): Promise<FormState> {
     const validatedFields = LoginFormSchema.safeParse({
         email: formData.get('email'),
@@ -65,11 +77,21 @@ export async function login(state: FormState, formData: FormData): Promise<FormS
     redirect('/logements')
 }
 
+/** Supprime la session courante et redirige vers la page de connexion.
+ *
+ * @returns Une promesse résolue lorsque la déconnexion est effectuée.
+ */
 export async function logout(): Promise<void> {
     await deleteSession()
     redirect('/login')
 }
 
+/** Valide l'email et demande un lien de réinitialisation de mot de passe via l'API.
+ *
+ * @param state - L'état actuel du formulaire.
+ * @param formData - Les données du formulaire de réinitialisation de mot de passe.
+ * @returns Le nouvel état du formulaire après la tentative de demande de réinitialisation.
+ */
 export async function requestPasswordReset(state: FormState, formData: FormData): Promise<FormState> {
     const validatedFields = RequestResetFormSchema.safeParse({
         email: formData.get('email'),
@@ -92,6 +114,12 @@ export async function requestPasswordReset(state: FormState, formData: FormData)
 
 type ResetPasswordState = { errors?: { token?: string[]; password?: string[] }; message?: string } | undefined
 
+/** Valide le token et le nouveau mot de passe, puis réinitialise via l'API.
+ *
+ * @param state - L'état actuel du formulaire.
+ * @param formData - Les données du formulaire de réinitialisation de mot de passe.
+ * @returns Le nouvel état du formulaire après la tentative de réinitialisation.
+ */
 export async function resetPassword(state: ResetPasswordState, formData: FormData): Promise<ResetPasswordState> {
     const validatedFields = ResetPasswordFormSchema.safeParse({
         token: formData.get('token'),

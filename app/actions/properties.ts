@@ -13,14 +13,30 @@ import {
 import { apiFetch } from '@/app/lib/api'
 import { getSession } from '@/app/lib/session'
 
+/** Récupère la liste de tous les logements publiés.
+ *
+ * @returns La liste des logements.
+ */
 export async function listProperties(): Promise<PropertyBase[]> {
     return apiFetch<PropertyBase[]>('/api/properties')
 }
 
+/**
+ * Récupère les détails d'un logement spécifique.
+ *
+ * @param id - L'identifiant du logement.
+ * @returns Les détails du logement.
+ */
 export async function getProperty(id: string): Promise<PropertyDetail> {
     return apiFetch<PropertyDetail>(`/api/properties/${id}`)
 }
 
+/**
+ * Crée un nouveau logement.
+ *
+ * @param property - Les informations du logement à créer.
+ * @returns Les détails du logement créé.
+ */
 export async function createProperty(property: PropertyCreate): Promise<PropertyDetail> {
     const session = await getSession()
     if (!session) throw new Error('Authentification requise.')
@@ -32,6 +48,13 @@ export async function createProperty(property: PropertyCreate): Promise<Property
     })
 }
 
+/**
+ * Met à jour un logement existant.
+ *
+ * @param id - L'identifiant du logement à mettre à jour.
+ * @param property - Les nouvelles informations du logement.
+ * @returns Les détails du logement mis à jour.
+ */
 export async function updateProperty(id: string, property: PropertyUpdate): Promise<PropertyDetail> {
     const session = await getSession()
     if (!session) throw new Error('Authentification requise.')
@@ -43,6 +66,12 @@ export async function updateProperty(id: string, property: PropertyUpdate): Prom
     })
 }
 
+/**
+ * Supprime un logement existant.
+ *
+ * @param id - L'identifiant du logement à supprimer.
+ * @returns Une promesse résolue lorsque le logement est supprimé.
+ */
 export async function deleteProperty(id: string): Promise<void> {
     const session = await getSession()
     if (!session) throw new Error('Authentification requise.')
@@ -53,10 +82,23 @@ export async function deleteProperty(id: string): Promise<void> {
     })
 }
 
+/**
+ * Récupère la liste des évaluations d'un logement spécifique.
+ *
+ * @param propertyId - L'identifiant du logement.
+ * @returns La liste des évaluations du logement.
+ */
 export async function listRatings(propertyId: string): Promise<Rating[]> {
     return apiFetch<Rating[]>(`/api/properties/${propertyId}/ratings`)
 }
 
+/**
+ * Ajoute une évaluation à un logement spécifique.
+ *
+ * @param propertyId - L'identifiant du logement.
+ * @param rating - Les informations de l'évaluation à ajouter.
+ * @returns Le résumé des évaluations du logement après l'ajout.
+ */
 export async function addRating(propertyId: string, rating: RatingCreate): Promise<RatingsSummary> {
     return apiFetch<RatingsSummary>(`/api/properties/${propertyId}/ratings`, {
         method: 'POST',
@@ -64,6 +106,12 @@ export async function addRating(propertyId: string, rating: RatingCreate): Promi
     })
 }
 
+/**
+ * Ajoute un logement aux favoris de l'utilisateur.
+ *
+ * @param propertyId - L'identifiant du logement à ajouter aux favoris.
+ * @returns Une confirmation de l'ajout aux favoris.
+ */
 export async function addFavorite(propertyId: string): Promise<Ok> {
     const session = await getSession()
     if (!session) throw new Error('Authentification requise.')
@@ -74,6 +122,12 @@ export async function addFavorite(propertyId: string): Promise<Ok> {
     })
 }
 
+/**
+ * Retire un logement des favoris de l'utilisateur.
+ *
+ * @param propertyId - L'identifiant du logement à retirer des favoris.
+ * @returns Une confirmation du retrait des favoris.
+ */
 export async function removeFavorite(propertyId: string): Promise<Ok> {
     const session = await getSession()
     if (!session) throw new Error('Authentification requise.')

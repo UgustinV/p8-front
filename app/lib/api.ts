@@ -19,6 +19,15 @@ type ApiFetchOptions = {
     headers?: HeadersInit
 }
 
+/**
+ * Appelle l'API backend et lève une `ApiRequestError` si la réponse n'est pas 2xx.
+ * 
+ * @template T - Le type attendu de la réponse.
+ * @param path - Le chemin de l'API à appeler.
+ * @param options - Les options de la requête.
+ * @returns La réponse de l'API typée en `T`.
+ * @throws {ApiRequestError} Si la réponse n'est pas 2xx.
+ */
 export async function apiFetch<T>(path: string, options: ApiFetchOptions = {}): Promise<T> {
     const { method = 'GET', token, body, headers } = options
     const isFormData = body instanceof FormData

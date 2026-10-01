@@ -13,6 +13,10 @@ export type DeleteImagesResult = {
 
 const CLOUDINARY_FOLDER = process.env.CLOUDINARY_FOLDER ?? 'kasa'
 
+/** Lit les identifiants Cloudinary depuis les variables d'environnement, lève une erreur si incomplets.
+ *
+ * @returns Les identifiants Cloudinary.
+ */
 function getCloudinaryConfig() {
     const cloudName = process.env.CLOUDINARY_CLOUD_NAME
     const apiKey = process.env.CLOUDINARY_API_KEY
@@ -25,7 +29,12 @@ function getCloudinaryConfig() {
     return { cloudName, apiKey, apiSecret }
 }
 
-// Cloudinary signature: sha1 of sorted "key=value" pairs plus the api secret
+/** Génère la signature Cloudinary pour les paramètres donnés.
+ *
+ * @param params - Les paramètres à signer.
+ * @param apiSecret - La clé secrète de l'API Cloudinary.
+ * @returns La signature générée.
+ */
 function signParams(params: Record<string, string | number>, apiSecret: string): string {
     const toSign = Object.keys(params)
         .sort()
@@ -35,6 +44,11 @@ function signParams(params: Record<string, string | number>, apiSecret: string):
     return createHash('sha1').update(`${toSign}${apiSecret}`).digest('hex')
 }
 
+/** Envoie un fichier vers Cloudinary via une requête signée ; nécessite d'être authentifié.
+ *
+ * @param formData - Les données du formulaire contenant le fichier et le but de l'upload.
+ * @returns La réponse de l'upload contenant l'URL sécurisée et l'identifiant public.
+ */
 export async function uploadImage(formData: FormData): Promise<UploadResponse> {
     const session = await getSession()
     if (!session) throw new Error('Authentification requise.')
@@ -73,6 +87,11 @@ export async function uploadImage(formData: FormData): Promise<UploadResponse> {
     } as UploadResponse
 }
 
+/** Supprime des images de Cloudinary via une requête signée ; nécessite d'être authentifié.
+ *
+ * @param input - Les identifiants publics des images à supprimer.
+ * @returns Le résultat de la suppression, incluant les images supprimées, non trouvées et les erreurs éventuelles.
+ */
 export async function deleteImages(input: { publicIds: string[] }): Promise<DeleteImagesResult> {
     const session = await getSession()
     if (!session) throw new Error('Authentification requise.')

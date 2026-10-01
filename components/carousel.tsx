@@ -9,6 +9,7 @@ type CarouselProps = {
     startIndex?: number;
 };
 
+/** Carrousel d'images plein écran navigable au clavier (flèches gauche/droite). */
 export const Carousel = ({ images, alt, startIndex = 0 }: CarouselProps) => {
     const [index, setIndex] = useState(startIndex);
     const containerRef = useRef<HTMLDivElement>(null);

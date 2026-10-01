@@ -4,6 +4,7 @@ import { useState } from "react";
 import { PropertyBase } from "@/app/lib/definitions";
 import { PropertyCard } from "@/components/propertyCard";
 
+/** Grille des logements favoris, retire une carte de la liste quand elle est "unlike". */
 export const LikedPropertiesGrid = ({ initialProperties }: { initialProperties: PropertyBase[] }) => {
     const [properties, setProperties] = useState(initialProperties);
 
