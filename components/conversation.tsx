@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type SubmitEvent } from "react";
+import { useEffect, useRef, useState, type SubmitEvent } from "react";
 import Image from "next/image";
 import { parseUtcDate, type Message } from "@/app/lib/definitions";
 
@@ -24,6 +24,11 @@ function formatDate(iso: string) {
 export const Conversation = ({ contactName, currentUserId, contactPicture, userPicture, messages, onSendMessage }: ConversationProps) => {
     const [draft, setDraft] = useState("");
     const [isSending, setIsSending] = useState(false);
+    const bottomRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        bottomRef.current?.scrollIntoView({ block: "end" });
+    }, [messages]);
 
     const handleSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -80,6 +85,7 @@ export const Conversation = ({ contactName, currentUserId, contactPicture, userP
                 {messages.length === 0 && (
                     <p className="text-sm text-(--dark-grey) text-center my-10">Aucun message pour le moment.</p>
                 )}
+                <div ref={bottomRef} />
             </div>
             <form onSubmit={handleSubmit} className="flex flex-row items-center gap-2 p-4 border-t border-(--light-grey)">
                 <input
