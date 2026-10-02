@@ -7,6 +7,8 @@ import { parseUtcDate, type Message } from "@/app/lib/definitions";
 type ConversationProps = {
     contactName: string;
     currentUserId: number;
+    contactPicture: string;
+    userPicture: string;
     messages: Message[];
     onSendMessage: (body: string) => Promise<void>;
 };
@@ -19,7 +21,7 @@ function formatDate(iso: string) {
     return parseUtcDate(iso).toLocaleDateString("fr-FR", { day: "2-digit", month: "long", year: "numeric" });
 }
 
-export const Conversation = ({ contactName, currentUserId, messages, onSendMessage }: ConversationProps) => {
+export const Conversation = ({ contactName, currentUserId, contactPicture, userPicture, messages, onSendMessage }: ConversationProps) => {
     const [draft, setDraft] = useState("");
     const [isSending, setIsSending] = useState(false);
 
@@ -57,11 +59,17 @@ export const Conversation = ({ contactName, currentUserId, messages, onSendMessa
                                     <hr className="flex-1 border-(--light-grey)" />
                                 </div>
                             )}
-                            <div className={`flex items-end gap-2 ${isMe ? "flex-row-reverse" : ""}`}>
-                                <div className="w-8 h-8 rounded-[10px] bg-(--dark-grey) shrink-0" />
+                            <div className={`flex items-start gap-2 ${isMe ? "flex-row-reverse" : ""}`}>
+                                <Image
+                                    src={isMe ? userPicture : contactPicture}
+                                    alt={isMe ? "Vous" : "Contact"}
+                                    width={32}
+                                    height={32}
+                                    className={`w-8 h-8 rounded-[10px] shrink-0 ${isMe ? (userPicture === "/profile.svg" ? "bg-(--dark-grey) p-2" : "") : (contactPicture === "/profile.svg" ? "bg-(--dark-grey) p-2" : "")}`}
+                                />
                                 <div className={`flex flex-col gap-1 max-w-xs ${isMe ? "items-end" : "items-start"}`}>
                                     <span className="text-xs text-(--dark-grey)">{isMe ? "Vous" : contactName} • {formatTime(message.created_at)}</span>
-                                    <p className={`text-sm p-3 rounded-[10px] ${isMe ? "bg-(--main-red) text-white" : "bg-white"}`}>
+                                    <p className={`text-sm p-4 ${isMe ? "bg-(--main-red) text-white rounded-l-4xl rounded-br-4xl" : "bg-white rounded-r-4xl rounded-bl-4xl"}`}>
                                         {message.body}
                                     </p>
                                 </div>

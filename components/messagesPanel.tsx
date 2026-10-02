@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Conversation } from "@/components/conversation";
 import { listMessages, sendMessage, markConversationRead } from "@/app/actions/messages";
 import { parseUtcDate, type ConversationSummary, type Message } from "@/app/lib/definitions";
+import Image from "next/image";
 
 type MessagesPanelProps = {
     conversations: ConversationSummary[];
@@ -17,16 +18,23 @@ function getOtherParticipant(conversation: ConversationSummary, currentUserId: n
 }
 
 export const MessagesPanel = ({ conversations, currentUserId, initialSelectedId }: MessagesPanelProps) => {
-    const [selectedId, setSelectedId] = useState<number | null>(initialSelectedId ?? conversations[0]?.id ?? null);
+    const [localConversations, setLocalConversations] = useState(conversations);
+    const [selectedId, setSelectedId] = useState<number | null>(initialSelectedId ?? null);
     const [messages, setMessages] = useState<Message[]>([]);
     const [readIds, setReadIds] = useState<Set<number>>(new Set());
+    const [isLoadingMessages, setIsLoadingMessages] = useState(false);
 
     useEffect(() => {
         if (selectedId === null) return;
 
         let cancelled = false;
+        setIsLoadingMessages(true);
+        setMessages([]);
         listMessages(selectedId).then((data) => {
-            if (!cancelled) setMessages(data);
+            if (!cancelled) {
+                setMessages(data);
+                setIsLoadingMessages(false);
+            }
         });
         markConversationRead(selectedId).then(() => {
             if (!cancelled) setReadIds((current) => new Set(current).add(selectedId));
@@ -37,13 +45,19 @@ export const MessagesPanel = ({ conversations, currentUserId, initialSelectedId 
         };
     }, [selectedId]);
 
-    const selectedConversation = conversations.find((conv) => conv.id === selectedId);
+    const selectedConversation = localConversations.find((conv) => conv.id === selectedId);
     const contact = selectedConversation ? getOtherParticipant(selectedConversation, currentUserId) : undefined;
+    const currentUserPicture = localConversations
+        .flatMap((conversation) => conversation.participants)
+        .find((participant) => participant.id === currentUserId)?.picture;
 
     const handleSendMessage = async (body: string) => {
         if (selectedId === null) return;
         const message = await sendMessage(selectedId, body);
         setMessages((current) => [...current, message]);
+        setLocalConversations((current) =>
+            current.map((conv) => (conv.id === selectedId ? { ...conv, last_message: message } : conv))
+        );
     };
 
     if (conversations.length === 0) {
@@ -66,7 +80,7 @@ export const MessagesPanel = ({ conversations, currentUserId, initialSelectedId 
                 </Link>
                 <h1 className="text-2xl font-bold mb-6">Messages</h1>
                 <div className="flex flex-col">
-                    {conversations.map((conv) => {
+                    {localConversations.map((conv) => {
                         const otherParticipant = getOtherParticipant(conv, currentUserId);
                         const isUnread = conv.unread_count > 0 && !readIds.has(conv.id);
 
@@ -79,7 +93,13 @@ export const MessagesPanel = ({ conversations, currentUserId, initialSelectedId 
                                     conv.id === selectedId ? "bg-(--light-grey)" : ""
                                 }`}
                             >
-                                <div className="w-8 h-8 rounded-[10px] bg-(--dark-grey) shrink-0" />
+                                <Image
+                                    src={otherParticipant?.picture ? otherParticipant.picture : "/profile.svg"}
+                                    alt={otherParticipant?.name ?? "Utilisateur"}
+                                    width={44}
+                                    height={44}
+                                    className={`w-11 h-11 rounded-[10px] shrink-0 ${otherParticipant?.picture ? "" : "bg-(--dark-grey) p-2"}`}
+                                />
                                 <div className="flex-1 min-w-0">
                                     <div className="flex flex-row items-center justify-between gap-2">
                                         <span className="font-semibold text-sm">{otherParticipant?.name ?? "Utilisateur"}</span>
@@ -89,22 +109,35 @@ export const MessagesPanel = ({ conversations, currentUserId, initialSelectedId 
                                             </span>
                                         )}
                                     </div>
-                                    <p className="text-xs text-(--dark-grey) truncate">{conv.last_message?.body ?? "Nouvelle conversation"}</p>
+                                    <div className="flex flex-row items-center justify-between gap-2">
+                                        <p className="text-xs text-(--dark-grey) truncate">{conv.last_message?.body ?? "Nouvelle conversation"}</p>
+                                        {isUnread && <span className="w-2 h-2 rounded-full bg-(--main-red) shrink-0" />}
+                                    </div>
                                 </div>
-                                {isUnread && <span className="w-2 h-2 rounded-full bg-(--main-red) mt-1.5 shrink-0" />}
                             </button>
                         );
                     })}
                 </div>
             </aside>
-
-            {selectedId !== null && (
-                <Conversation
-                    contactName={contact?.name ?? "Utilisateur"}
-                    currentUserId={currentUserId}
-                    messages={messages}
-                    onSendMessage={handleSendMessage}
-                />
+            {selectedId !== null ? (
+                isLoadingMessages ? (
+                    <section className="flex flex-1 items-center justify-center bg-background">
+                        <div className="w-8 h-8 border-2 border-(--light-grey) border-t-(--main-red) rounded-full animate-spin" />
+                    </section>
+                ) : (
+                    <Conversation
+                        contactName={contact?.name ?? "Utilisateur"}
+                        currentUserId={currentUserId}
+                        messages={messages}
+                        onSendMessage={handleSendMessage}
+                        contactPicture={contact?.picture ?? "/profile.svg"}
+                        userPicture={currentUserPicture ?? "/profile.svg"}
+                    />
+                )
+            ) : (
+                <section className="hidden md:flex flex-1 items-center justify-center bg-background">
+                    <p className="text-sm text-(--dark-grey)">Sélectionnez une conversation pour l&apos;afficher ici.</p>
+                </section>
             )}
         </div>
     );

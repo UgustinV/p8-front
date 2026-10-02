@@ -50,7 +50,7 @@ export default async function LogementPage({ params }: { params: Promise<{ id: s
                 <div className="flex flex-col justify-start items-start bg-white w-full lg:w-1/3 h-fit p-6 rounded-[10px] gap-2 text-[16px]">
                     <span className="font-bold">Votre hôte</span>
                     <div className="flex flex-row items-center gap-4.5 py-4">
-                        <Image src={property.host?.picture ?? "/default-profile.png"} alt={"Photo de profil de l'hôte"} width={82} height={82} className="w-20.5 h-20.5 rounded-[10px]" />
+                        <Image src={property.host?.picture ?? "/profile.svg"} alt={"Photo de profil de l'hôte"} width={82} height={82} className="w-20.5 h-20.5 object-cover rounded-[10px]" />
                         <p className="font-medium">{property.host?.name}</p>
                         <div className="flex flex-row gap-1 bg-(--light-grey) w-fit p-2 rounded-[10px]">
                             <Image src="/rating.svg" alt="Icône de notation" width={16} height={16} />
