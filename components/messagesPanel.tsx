@@ -74,7 +74,7 @@ export const MessagesPanel = ({ conversations, currentUserId, initialSelectedId 
 
     return (
         <div className="flex flex-col md:flex-row w-full h-full self-stretch lg:h-screen bg-white rounded-[10px] overflow-hidden">
-            <aside className="flex flex-col w-full md:w-1/3 lg:w-2/5 p-6 md:border-r border-(--light-grey) overflow-y-auto">
+            <aside className={`flex-col w-full md:w-1/3 lg:w-2/5 p-6 md:border-r border-(--light-grey) overflow-y-auto ${selectedId !== null ? "hidden md:flex" : "flex"}`}>
                 <Link href="/logements" className="flex flex-row items-center gap-1 bg-(--light-grey) p-2.5 rounded-[10px] w-fit mb-6 text-sm font-medium text-(--dark-grey)">
                     <span aria-hidden>←</span> Retour
                 </Link>
@@ -95,7 +95,7 @@ export const MessagesPanel = ({ conversations, currentUserId, initialSelectedId 
                             >
                                 <Image
                                     src={otherParticipant?.picture ? otherParticipant.picture : "/profile.svg"}
-                                    alt={otherParticipant?.name ?? "Utilisateur"}
+                                    alt={`Profil de ${otherParticipant?.name ?? "Utilisateur"}`}
                                     width={44}
                                     height={44}
                                     className={`w-11 h-11 rounded-[10px] shrink-0 ${otherParticipant?.picture ? "" : "bg-(--dark-grey) p-2"}`}
@@ -121,8 +121,17 @@ export const MessagesPanel = ({ conversations, currentUserId, initialSelectedId 
             </aside>
             {selectedId !== null ? (
                 isLoadingMessages ? (
-                    <section className="flex flex-1 items-center justify-center bg-background">
-                        <div className="w-8 h-8 border-2 border-(--light-grey) border-t-(--main-red) rounded-full animate-spin" />
+                    <section className="flex flex-col flex-1 bg-background">
+                        <button
+                            type="button"
+                            onClick={() => setSelectedId(null)}
+                            className="flex md:hidden flex-row items-center gap-1 bg-(--light-grey) p-2.5 rounded-[10px] w-fit m-4 text-sm font-medium text-(--dark-grey) hover:cursor-pointer"
+                        >
+                            <span aria-hidden>←</span> Retour
+                        </button>
+                        <div className="flex flex-1 items-center justify-center">
+                            <div className="w-8 h-8 border-2 border-(--light-grey) border-t-(--main-red) rounded-full animate-spin" />
+                        </div>
                     </section>
                 ) : (
                     <Conversation
@@ -132,6 +141,7 @@ export const MessagesPanel = ({ conversations, currentUserId, initialSelectedId 
                         onSendMessage={handleSendMessage}
                         contactPicture={contact?.picture ?? "/profile.svg"}
                         userPicture={currentUserPicture ?? "/profile.svg"}
+                        onBack={() => setSelectedId(null)}
                     />
                 )
             ) : (

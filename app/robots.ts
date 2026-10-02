@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL;
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
@@ -7,5 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/liked", "/messages", "/new-logement"],
     },
+    sitemap: `${BASE_URL}/sitemap.xml`,
   };
 }

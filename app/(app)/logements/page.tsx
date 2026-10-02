@@ -23,7 +23,12 @@ export default async function LogementsPage() {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 my-10">
                 {properties.map((property) => (
-                    <PropertyCard key={property.id} property={property} liked={likedProperties.some((likedProperty) => likedProperty.id === property.id)} />
+                    <PropertyCard
+                        key={property.id}
+                        property={property}
+                        liked={likedProperties.some((likedProperty) => likedProperty.id === property.id)}
+                        isLoggedIn={Boolean(user)}
+                    />
                 ))}
             </div>
             <div className="flex flex-col items-center text-center gap-10 px-2 lg:p-10 bg-white rounded-[10px]">

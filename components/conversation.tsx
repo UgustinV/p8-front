@@ -11,6 +11,7 @@ type ConversationProps = {
     userPicture: string;
     messages: Message[];
     onSendMessage: (body: string) => Promise<void>;
+    onBack: () => void;
 };
 
 function formatTime(iso: string) {
@@ -21,8 +22,7 @@ function formatDate(iso: string) {
     return parseUtcDate(iso).toLocaleDateString("fr-FR", { day: "2-digit", month: "long", year: "numeric" });
 }
 
-export const Conversation = ({ contactName, currentUserId, contactPicture, userPicture, messages, onSendMessage }: ConversationProps) => {
-    const [draft, setDraft] = useState("");
+export const Conversation = ({ contactName, currentUserId, contactPicture, userPicture, messages, onSendMessage, onBack }: ConversationProps) => {    const [draft, setDraft] = useState("");
     const [isSending, setIsSending] = useState(false);
     const bottomRef = useRef<HTMLDivElement>(null);
 
@@ -48,6 +48,13 @@ export const Conversation = ({ contactName, currentUserId, contactPicture, userP
 
     return (
         <section className="flex flex-col flex-1 bg-background">
+            <button
+                type="button"
+                onClick={onBack}
+                className="flex md:hidden flex-row items-center gap-1 bg-(--light-grey) p-2.5 rounded-[10px] w-fit m-4 text-sm font-medium text-(--dark-grey) hover:cursor-pointer"
+            >
+                <span aria-hidden>←</span> Retour
+            </button>
             <div className="flex-1 p-6 flex flex-col gap-4 overflow-y-auto">
                 {messages.map((message) => {
                     const messageDate = formatDate(message.created_at);
@@ -67,7 +74,7 @@ export const Conversation = ({ contactName, currentUserId, contactPicture, userP
                             <div className={`flex items-start gap-2 ${isMe ? "flex-row-reverse" : ""}`}>
                                 <Image
                                     src={isMe ? userPicture : contactPicture}
-                                    alt={isMe ? "Vous" : "Contact"}
+                                    alt={isMe ? `Profil du message ${message.id} de vous` : `Profil du message ${message.id} de ${contactName}`}
                                     width={32}
                                     height={32}
                                     className={`w-8 h-8 rounded-[10px] shrink-0 ${isMe ? (userPicture === "/profile.svg" ? "bg-(--dark-grey) p-2" : "") : (contactPicture === "/profile.svg" ? "bg-(--dark-grey) p-2" : "")}`}
@@ -88,7 +95,9 @@ export const Conversation = ({ contactName, currentUserId, contactPicture, userP
                 <div ref={bottomRef} />
             </div>
             <form onSubmit={handleSubmit} className="flex flex-row items-center gap-2 p-4 border-t border-(--light-grey)">
+                <label htmlFor="message-input" className="sr-only">Message</label>
                 <input
+                    id="message-input"
                     type="text"
                     value={draft}
                     onChange={(e) => setDraft(e.target.value)}

@@ -9,11 +9,12 @@ import Image from "next/image";
 type PropertyCardProps = {
     property: PropertyBase;
     liked?: boolean;
+    isLoggedIn?: boolean;
     onUnlike?: (propertyId: string) => void;
 };
 
 /** Carte de logement avec bouton favori à mise à jour dynamiquement. */
-export const PropertyCard = ({ property, liked: initialLiked = false, onUnlike }: PropertyCardProps) => {
+export const PropertyCard = ({ property, liked: initialLiked = false, isLoggedIn = true, onUnlike }: PropertyCardProps) => {
     const [liked, setLiked] = useState(initialLiked);
     const [isPending, startTransition] = useTransition();
 
@@ -37,8 +38,15 @@ export const PropertyCard = ({ property, liked: initialLiked = false, onUnlike }
 
     return (
         <div className="relative bg-white">
-            <button onClick={handleToggleFavorite} disabled={isPending} className={`absolute top-4 right-4 ${liked ? "bg-(--main-red)" : "bg-(--light-grey)"} p-2 rounded-[5px] w-8 h-8 cursor-pointer hover:opacity-75`}>
-            <Image src={liked ? "/favoris-selected.svg" : "/favoris.svg"} alt={liked ? "Retirer des favoris" : "Ajouter aux favoris"} width={16} height={16} className="h-4 w-4" />            </button>
+            {isLoggedIn ? (
+                <button onClick={handleToggleFavorite} disabled={isPending} className={`absolute top-4 right-4 ${liked ? "bg-(--main-red)" : "bg-(--light-grey)"} p-2 rounded-[5px] w-8 h-8 cursor-pointer hover:opacity-75`}>
+                    <Image src={liked ? "/favoris-selected.svg" : "/favoris.svg"} alt={liked ? "Retirer des favoris" : "Ajouter aux favoris"} width={16} height={16} className="h-4 w-4" />
+                </button>
+            ) : (
+                <Link href="/login" className="absolute top-4 right-4 bg-(--light-grey) p-2 rounded-[5px] w-8 h-8 flex items-center justify-center hover:opacity-75" aria-label="Se connecter pour ajouter aux favoris">
+                    <Image src="/favoris.svg" alt="Se connecter pour ajouter aux favoris" width={16} height={16} className="h-4 w-4" />
+                </Link>
+            )}
             <Link className="rounded-b-[10px]" href={`/logements/${property.id}`}>
                 <Image src={property.cover ?? "/default-cover.jpg"} alt="" className="w-full h-94 object-cover rounded-t-[10px] pb-4" width={600} height={376} />
                 <div className="px-6 pb-6">
