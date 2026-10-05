@@ -47,7 +47,7 @@ export const Conversation = ({ contactName, currentUserId, contactPicture, userP
     let lastDate: string | null = null;
 
     return (
-        <section className="flex flex-col flex-1 bg-background">
+        <section className="flex flex-col flex-1 min-h-0 bg-background">
             <button
                 type="button"
                 onClick={onBack}
@@ -55,7 +55,7 @@ export const Conversation = ({ contactName, currentUserId, contactPicture, userP
             >
                 <span aria-hidden>←</span> Retour
             </button>
-            <div className="flex-1 p-6 flex flex-col gap-4 overflow-y-auto">
+             <div className="flex-1 min-h-0 p-6 flex flex-col gap-4 overflow-y-auto">
                 {messages.map((message) => {
                     const messageDate = formatDate(message.created_at);
                     const showDivider = messageDate !== lastDate;
