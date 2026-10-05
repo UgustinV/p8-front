@@ -25,12 +25,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased bg-background`}
     >
-      <body className="items-center min-h-full flex flex-col bg-background">
-        <Header />
-        <main className="flex flex-1 w-full items-center justify-center">
-            {children}
-        </main>
-        <Footer />
+        <body className="items-center h-dvh overflow-hidden lg:h-auto lg:min-h-full lg:overflow-visible flex flex-col bg-background">
+            <Header />
+            <main className="flex flex-1 min-h-0 w-full items-center-safe justify-center-safe overflow-y-auto lg:items-center lg:justify-center lg:overflow-visible lg:min-h-auto">
+                {children}
+            </main>
+            <Footer />
         </body>
     </html>
   );

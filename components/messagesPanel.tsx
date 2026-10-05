@@ -73,7 +73,7 @@ export const MessagesPanel = ({ conversations, currentUserId, initialSelectedId 
     }
 
     return (
-        <div className="flex flex-col md:flex-row w-full h-full self-stretch lg:h-screen bg-white rounded-[10px] overflow-hidden">
+        <div className="flex flex-col md:flex-row w-full h-full min-h-0 self-stretch lg:h-screen bg-white rounded-[10px] overflow-hidden">
             <aside className={`flex-col w-full md:w-1/3 lg:w-2/5 p-6 md:border-r border-(--light-grey) overflow-y-auto ${selectedId !== null ? "hidden md:flex" : "flex"}`}>
                 <Link href="/logements" className="flex flex-row items-center gap-1 bg-(--light-grey) p-2.5 rounded-[10px] w-fit mb-6 text-sm font-medium text-(--dark-grey)">
                     <span aria-hidden>←</span> Retour
