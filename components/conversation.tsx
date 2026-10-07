@@ -22,6 +22,7 @@ function formatDate(iso: string) {
     return parseUtcDate(iso).toLocaleDateString("fr-FR", { day: "2-digit", month: "long", year: "numeric" });
 }
 
+/** Fil de discussion d'une conversation : historique des messages, séparateurs de date et formulaire d'envoi. */
 export const Conversation = ({ contactName, currentUserId, contactPicture, userPicture, messages, onSendMessage, onBack }: ConversationProps) => {    const [draft, setDraft] = useState("");
     const [isSending, setIsSending] = useState(false);
     const bottomRef = useRef<HTMLDivElement>(null);
@@ -44,6 +45,7 @@ export const Conversation = ({ contactName, currentUserId, contactPicture, userP
         }
     };
 
+    // Variable pour suivre la dernière date affichée afin de gérer les séparateurs de date.
     let lastDate: string | null = null;
 
     return (

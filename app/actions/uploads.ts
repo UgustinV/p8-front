@@ -36,6 +36,7 @@ function getCloudinaryConfig() {
  * @returns La signature générée.
  */
 function signParams(params: Record<string, string | number>, apiSecret: string): string {
+    // doit respecter exactement la méthode de signature de Cloudinary (clés triées, concaténées, puis clé secrète ajoutée) : sinon échec d'authentification
     const toSign = Object.keys(params)
         .sort()
         .map((key) => `${key}=${params[key]}`)
@@ -80,6 +81,7 @@ export async function uploadImage(formData: FormData): Promise<UploadResponse> {
         throw new Error(payload?.error?.message ?? `Erreur ${response.status}.`)
     }
 
+    // upload d'abord vers Cloudinary, puis retourne l'url et l'identifiant public.
     return {
         url: payload.secure_url,
         public_id: payload.public_id,

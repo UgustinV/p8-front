@@ -13,10 +13,12 @@ type MessagesPanelProps = {
     initialSelectedId?: number;
 };
 
+/** Retourne l'autre participant d'une conversation (celui qui n'est pas l'utilisateur). */
 function getOtherParticipant(conversation: ConversationSummary, currentUserId: number) {
     return conversation.participants.find((participant) => participant.id !== currentUserId);
 }
 
+/** Messagerie complète : liste des conversations et fil de discussion, avec chargement et suivi de lecture. */
 export const MessagesPanel = ({ conversations, currentUserId, initialSelectedId }: MessagesPanelProps) => {
     const [localConversations, setLocalConversations] = useState(conversations);
     const [selectedId, setSelectedId] = useState<number | null>(initialSelectedId ?? null);
@@ -26,7 +28,7 @@ export const MessagesPanel = ({ conversations, currentUserId, initialSelectedId 
 
     useEffect(() => {
         if (selectedId === null) return;
-
+        // Réinitialise l'état de lecture pour la conversation sélectionnée
         let cancelled = false;
         setIsLoadingMessages(true);
         setMessages([]);
@@ -82,6 +84,7 @@ export const MessagesPanel = ({ conversations, currentUserId, initialSelectedId 
                 <div className="flex flex-col">
                     {localConversations.map((conv) => {
                         const otherParticipant = getOtherParticipant(conv, currentUserId);
+                        // Détermine si la conversation est non lue pour l'utilisateur actuel en local (en se basant sur le compteur de messages non lus et l'ensemble des conversations lues) car la conversation est lue sur le serveur au rechargement de la page et non instantanément.
                         const isUnread = conv.unread_count > 0 && !readIds.has(conv.id);
 
                         return (

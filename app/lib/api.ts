@@ -2,6 +2,7 @@ import 'server-only'
 
 const API_BASE_URL = process.env.API_URL ?? 'http://localhost:8000'
 
+/** Erreur levée par `apiFetch` lorsque l'API répond avec un statut autre que 2xx. */
 export class ApiRequestError extends Error {
     status: number
 

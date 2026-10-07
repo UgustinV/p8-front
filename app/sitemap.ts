@@ -20,6 +20,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
         return [...staticRoutes, ...propertyRoutes];
     } catch {
+        // En cas d'erreur lors de la récupération des propriétés, on se rabat sur les routes statiques.
         return staticRoutes;
     }
 }

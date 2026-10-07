@@ -202,6 +202,14 @@ export type ConversationCreate = {
     message?: string | null
 }
 
+/** Parse une date ISO de l'API en forçant l'UTC si le fuseau horaire est absent.
+ *
+ * L'API renvoie des dates sans suffixe de fuseau (ex. `2024-01-01T10:00:00`), que `Date`
+ * interpréterait sinon comme une heure locale du navigateur plutôt qu'UTC.
+ *
+ * @param iso - La chaîne de date ISO 8601, avec ou sans fuseau.
+ * @returns La date correctement interprétée en UTC.
+ */
 export function parseUtcDate(iso: string): Date {
     const hasTimezone = /[zZ]|[+-]\d{2}:?\d{2}$/.test(iso);
     return new Date(hasTimezone ? iso : `${iso}Z`);

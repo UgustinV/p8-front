@@ -18,6 +18,7 @@ export const PropertyCard = ({ property, liked: initialLiked = false, isLoggedIn
     const [liked, setLiked] = useState(initialLiked);
     const [isPending, startTransition] = useTransition();
 
+    // Gestion du clic sur le bouton favori avec mise à jour et transition.
     const handleToggleFavorite = () => {
         const nextLiked = !liked;
         setLiked(nextLiked);
@@ -30,6 +31,7 @@ export const PropertyCard = ({ property, liked: initialLiked = false, isLoggedIn
                     onUnlike?.(property.id);
                 }
             } catch (error) {
+                // En cas d'erreur, rétablit l'état précédent du favori
                 setLiked(!nextLiked);
                 console.error(error);
             }

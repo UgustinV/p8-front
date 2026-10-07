@@ -25,6 +25,7 @@ const DEFAULT_CATEGORIES = [
     "Vue sur mer", "Pour les couples", "Famille", "Forêt",
 ];
 
+/** Sélecteur d'un fichier image unique, avec aperçu du nom de fichier choisi. */
 function ImagePickerRow({ fileName, onChange }: { fileName?: string; onChange: (file: File | null) => void }) {
     return (
         <div className="flex flex-row items-center gap-2">
@@ -48,6 +49,7 @@ type NewLogementFormProps = {
     user: AuthUser;
 };
 
+/** Formulaire de création d'un logement : upload des images vers Cloudinary puis création de la propriété via l'API. */
 export function NewLogementForm({ user }: NewLogementFormProps) {
     const router = useRouter();
 
@@ -92,6 +94,12 @@ export function NewLogementForm({ user }: NewLogementFormProps) {
         setPictureFiles((current) => [...current, null]);
     };
 
+    /** Upload un fichier vers Cloudinary si fourni.
+     *
+     * @param file - Le fichier à uploader, ou `null` si aucun n'est sélectionné.
+     * @param purpose - L'usage de l'image, transmis à l'API d'upload.
+     * @returns L'URL de l'image uploadée, ou `undefined` si aucun fichier n'était fourni.
+     */
     const uploadIfPresent = async (file: File | null, purpose: "property-cover" | "property-picture" | "user-picture") => {
         if (!file) return undefined;
         const formData = new FormData();
@@ -116,6 +124,7 @@ export function NewLogementForm({ user }: NewLogementFormProps) {
                 title,
                 description,
                 cover: coverUrl,
+                // Localisation construite à partir du code postal et de la ville
                 location: [postalCode, location].filter(Boolean).join(" "),
                 price_per_night: Number(price),
                 pictures: pictureUrls,

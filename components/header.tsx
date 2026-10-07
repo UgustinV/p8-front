@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
+/** Navigation principale, avec menu mobile repliable et fermeture au clic extérieur. */
 export default function Header() {
     const pathname = usePathname();
     const isMessagesPage = pathname === "/messages";
@@ -84,6 +85,9 @@ export default function Header() {
                     </Link>
                     <Link href="/messages" prefetch={false} onClick={() => setIsMenuOpen(false)}>
                         Messages
+                    </Link>
+                    <Link href="/logout" prefetch={false} onClick={() => setIsMenuOpen(false)}>
+                        Déconnexion
                     </Link>
                 </div>
             )}
