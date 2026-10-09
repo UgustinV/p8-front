@@ -10,7 +10,7 @@ import {
     RatingsSummary,
     Ok,
 } from '@/app/lib/definitions'
-import { apiFetch } from '@/app/lib/api'
+import { apiFetch, ApiRequestError } from '@/app/lib/api'
 import { getSession } from '@/app/lib/session'
 
 /** Récupère la liste de tous les logements publiés.
@@ -27,8 +27,15 @@ export async function listProperties(): Promise<PropertyBase[]> {
  * @param id - L'identifiant du logement.
  * @returns Les détails du logement.
  */
-export async function getProperty(id: string): Promise<PropertyDetail> {
-    return apiFetch<PropertyDetail>(`/api/properties/${id}`)
+export async function getProperty(id: string): Promise<PropertyDetail | null> {
+    try {
+        return await apiFetch<PropertyDetail>(`/api/properties/${id}`)
+    } catch (error) {
+        if (error instanceof ApiRequestError && error.status === 404) {
+            return null
+        }
+        throw error
+    }
 }
 
 /**

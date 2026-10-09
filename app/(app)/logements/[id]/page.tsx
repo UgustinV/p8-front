@@ -5,10 +5,14 @@ import { getSession } from "@/app/lib/session";
 import { Tag } from "@/components/tag";
 import Image from "next/image";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
 export default async function LogementPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params
     const property = await getProperty(id)
+    if (!property) {
+        notFound()
+    }
     const session = await getSession()
     const isOwnProperty = property.host?.id === session?.user.id
 

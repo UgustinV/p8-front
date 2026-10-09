@@ -47,7 +47,7 @@ export async function getConversation(id: number): Promise<Conversation> {
  */
 export async function createConversation(input: ConversationCreate): Promise<Conversation> {
     const session = await getSession()
-    if (!session) throw new Error('Authentification requise.')
+    if (!session) redirect('/login')
 
     return apiFetch<Conversation>('/api/conversations', {
         method: 'POST',

@@ -12,6 +12,7 @@ type CarouselProps = {
 /** Carrousel d'images plein écran navigable au clavier (flèches gauche/droite). */
 export const Carousel = ({ images, alt, startIndex = 0 }: CarouselProps) => {
     const [index, setIndex] = useState(startIndex);
+    const [isLoading, setIsLoading] = useState(true);
     const containerRef = useRef<HTMLDivElement>(null);
     const hasMultiple = images.length > 1;
 
@@ -20,10 +21,12 @@ export const Carousel = ({ images, alt, startIndex = 0 }: CarouselProps) => {
     }, []);
 
     const goPrev = useCallback(() => {
+        setIsLoading(true);
         setIndex((current) => (current === 0 ? images.length - 1 : current - 1));
     }, [images.length]);
 
     const goNext = useCallback(() => {
+        setIsLoading(true);
         setIndex((current) => (current === images.length - 1 ? 0 : current + 1));
     }, [images.length]);
 
@@ -37,13 +40,24 @@ export const Carousel = ({ images, alt, startIndex = 0 }: CarouselProps) => {
     return (
         <div
             ref={containerRef}
-            className="relative inline-block outline-none"
+            className="relative inline-block outline-none min-w-50 min-h-50"
             tabIndex={0}
             role="region"
             aria-roledescription="carousel"
             aria-label={alt}
+            aria-busy={isLoading}
             onKeyDown={handleKeyDown}
         >
+            {isLoading && (
+                <div
+                    role="status"
+                    aria-label="Chargement de l'image"
+                    className="absolute inset-0 flex items-center justify-center"
+                >
+                    <div className="h-10 w-10 animate-spin rounded-full border-4 border-white/30 border-t-white" />
+                </div>
+            )}
+
             {/* remounting on index change replays the fade-in animation */}
             <Image
                 key={index}
@@ -53,8 +67,12 @@ export const Carousel = ({ images, alt, startIndex = 0 }: CarouselProps) => {
                 height={1000}
                 sizes="90vw"
                 priority
-                className="block w-auto h-auto max-w-[90vw] max-h-[85vh] object-contain rounded-[10px]"
-                style={{ animation: "fadeIn 0.4s ease-in-out" }}
+                onLoad={() => setIsLoading(false)}
+                onError={() => setIsLoading(false)}
+                className={`block w-auto h-auto max-w-[90vw] max-h-[85vh] object-contain rounded-[10px] ${
+                    isLoading ? "opacity-0" : "opacity-100"
+                }`}
+                style={isLoading ? undefined : { animation: "fadeIn 0.4s ease-in-out" }}
             />
 
             {hasMultiple && (
